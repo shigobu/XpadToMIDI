@@ -1,0 +1,25 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<xs:schema id="noteDataSet" targetNamespace="http://tempuri.org/noteDataSet.xsd" xmlns:mstns="http://tempuri.org/noteDataSet.xsd" xmlns="http://tempuri.org/noteDataSet.xsd" xmlns:xs="http://www.w3.org/2001/XMLSchema" xmlns:msdata="urn:schemas-microsoft-com:xml-msdata" xmlns:msprop="urn:schemas-microsoft-com:xml-msprop" attributeFormDefault="qualified" elementFormDefault="qualified">
+  <xs:annotation>
+    <xs:appinfo source="urn:schemas-microsoft-com:xml-msdatasource">
+      <DataSource DefaultConnectionIndex="0" FunctionsComponentName="QueriesTableAdapter" Modifier="AutoLayout, AnsiClass, Class, Public" SchemaSerializationMode="IncludeSchema" xmlns="urn:schemas-microsoft-com:xml-msdatasource">
+        <Connections />
+        <Tables />
+        <Sources />
+      </DataSource>
+    </xs:appinfo>
+  </xs:annotation>
+  <xs:element name="noteDataSet" msdata:IsDataSet="true" msdata:UseCurrentLocale="true" msprop:EnableTableAdapterManager="true" msprop:Generator_DataSetName="noteDataSet" msprop:Generator_UserDSName="noteDataSet">
+    <xs:complexType>
+      <xs:choice minOccurs="0" maxOccurs="unbounded">
+        <xs:element name="NoteData" msprop:Generator_TableClassName="NoteDataDataTable" msprop:Generator_TableVarName="tableNoteData" msprop:Generator_TablePropName="NoteData" msprop:Generator_RowDeletingName="NoteDataRowDeleting" msprop:Generator_RowChangingName="NoteDataRowChanging" msprop:Generator_RowEvHandlerName="NoteDataRowChangeEventHandler" msprop:Generator_RowDeletedName="NoteDataRowDeleted" msprop:Generator_UserTableName="NoteData" msprop:Generator_RowChangedName="NoteDataRowChanged" msprop:Generator_RowEvArgName="NoteDataRowChangeEvent" msprop:Generator_RowClassName="NoteDataRow">
+          <xs:complexType>
+            <xs:sequence>
+              <xs:element name="NoteOnOrOff" msprop:Generator_ColumnVarNameInTable="columnNoteOnOrOff" msprop:Generator_ColumnPropNameInRow="NoteOnOrOff" msprop:Generator_ColumnPropNameInTable="NoteOnOrOffColumn" msprop:Generator_UserColumnName="NoteOnOrOff" type="xs:string" minOccurs="0" />
+            </xs:sequence>
+          </xs:complexType>
+        </xs:element>
+      </xs:choice>
+    </xs:complexType>
+  </xs:element>
+</xs:schema>
