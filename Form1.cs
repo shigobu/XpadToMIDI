@@ -26,6 +26,8 @@ namespace XpadToMIDI
         public int TriggerThreshold = 10;
         public int TriggerSet = 1;
         public int analogAsobi = 10;
+        private System.Timers.Timer RealTimer;
+
 
         //MIDIの送信  
         private void MIDIout(ComboBox cb, NumericUpDown tb1, Control tb2, CheckBox chb)
@@ -129,7 +131,10 @@ namespace XpadToMIDI
             MIDIchLabel.Text = "ch" + (MIDIch + 1).ToString("D2");
             tabControl1.SelectedIndex = 1;
             tabControl1.SelectedIndex = 0;
-            timer1.Enabled = true;
+            //timer1.Enabled = true;
+            RealTimer = new System.Timers.Timer(10);
+            RealTimer.Elapsed += new System.Timers.ElapsedEventHandler(OnElapsed_TimersTimer);
+            RealTimer.Start();
         }
 
         //ショウンのイベントハンドラ
@@ -194,6 +199,12 @@ namespace XpadToMIDI
             {
                 M = Math.Abs(state) - 1;
             }
+        }
+
+        //タイマーイベントスレッド
+        static void OnElapsed_TimersTimer(object sender, System.Timers.ElapsedEventArgs e)
+        {
+
         }
 
         //タイマーイベントハンドラ
@@ -1765,6 +1776,12 @@ namespace XpadToMIDI
         private void asobiNumericUpDown_ValueChanged(object sender, EventArgs e)
         {
             analogAsobi = (int)asobiNumericUpDown.Value;
+        }
+
+        private void Form1_FormClosed(object sender, FormClosedEventArgs e)
+        {
+            RealTimer.Stop();
+            RealTimer.Dispose();
         }
     }
 }
