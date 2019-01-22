@@ -62,7 +62,7 @@ namespace Controller
         {
             Number = number;
             if (Number >= 4) throw new ArgumentOutOfRangeException("コントローラー番号に4以上は指定できません。");
-            if (!IsConected(Number)) throw new NotSupportedException("指定された番号のコントローラーは存在しません。");
+            if (!IsConnected(Number)) throw new NotSupportedException("指定された番号のコントローラーは存在しません。");
 
             var c = new XInputCapabilities();
             XInputGetCapabilities(Number, 0, out c);
@@ -82,7 +82,7 @@ namespace Controller
         /// <returns>現在の状態</returns>
         public XInputState GetState()
         {
-            if (!IsConected(Number)) throw new NotSupportedException("接続が切れた可能性があります");
+            if (!IsConnected(Number)) throw new NotSupportedException("接続が切れた可能性があります");
             var i = new XInputState();
             XInputGetState(Number, out i);
             packetnum = i.PacketNumber;

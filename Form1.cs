@@ -129,11 +129,8 @@ namespace XpadToMIDI
             MIDIchLabel.Text = "ch" + (MIDIch + 1).ToString("D2");
             tabControl1.SelectedIndex = 1;
             tabControl1.SelectedIndex = 0;
-            //timer1.Enabled = true;
-            RealTimer = new System.Timers.Timer(10);
-            RealTimer.Elapsed += new System.Timers.ElapsedEventHandler(OnElapsed_TimersTimer);
-            RealTimer.Start();
-        }
+			timer1.Enabled = true;
+		}
 
         //ショウンのイベントハンドラ
         private void Form1_Shown(object sender, EventArgs e)
@@ -1778,8 +1775,6 @@ namespace XpadToMIDI
 
         private void Form1_FormClosed(object sender, FormClosedEventArgs e)
         {
-            RealTimer.Stop();
-            RealTimer.Dispose();
         }
     }
 }
