@@ -6,8 +6,7 @@ using System.Drawing;
 using System.Linq;
 using System.Text;
 using System.Windows.Forms;
-using SlimDX.XInput;
-
+using Controller;
 
 namespace XpadToMIDI
 {
@@ -21,8 +20,7 @@ namespace XpadToMIDI
         public int MIDIch = 0;
         public bool PCsendSet = true;
         bool LoadOnce = false;
-        Controller[] Xcont = new Controller[4] { new Controller(UserIndex.One), new Controller(UserIndex.Two), new Controller(UserIndex.Three), new Controller(UserIndex.Four) };
-        int selectedController = 0;
+        uint selectedController = 0;
         public int TriggerThreshold = 10;
         public int TriggerSet = 1;
         public int analogAsobi = 10;
@@ -199,13 +197,13 @@ namespace XpadToMIDI
         //タイマーイベントハンドラ
         private void timer1_Tick(object sender, EventArgs e)
         {
-            int i;
+            uint i;
             RadioButton[] PadRadiButton = new RadioButton[4] { pad1RadioButton, pad2RadioButton, pad3RadioButton, pad4RadioButton };
 
             //コントローラーの接続状態確認
             for (i=0;i<4;i++)
             {
-                if(Xcont[i].IsConnected)
+                if(XInput.IsConnected(i))
                 {
                     PadRadiButton[i].BackColor = Color.Lime;
                 }
@@ -232,7 +230,7 @@ namespace XpadToMIDI
                 selectedController = 3;
             }
             
-            if(Xcont[selectedController].IsConnected == false || tabControl1.Enabled == false)
+            if(XInput.IsConnected(selectedController) == false || tabControl1.Enabled == false)
             {
                 return;
             }
@@ -281,13 +279,13 @@ namespace XpadToMIDI
                 button8checkBox.Enabled = true;
                 RTcomboBox.Enabled = true;
             }
-
-            State contState = Xcont[selectedController].GetState();
-            Gamepad Xpad = contState.Gamepad;
-            GamepadButtonFlags buttonFlags = Xpad.Buttons;
+            XInput Xcont = new XInput(selectedController);
+            XInputState contState = Xcont.GetState();
+            XInputGamepadState Xpad = contState.Gamepad;
+            XInputButtonKind buttonFlags = Xpad.Buttons;
 
             //↓ボタン
-            if (buttonFlags.HasFlag(GamepadButtonFlags.A))
+            if (buttonFlags.HasFlag(XInputButtonKind.A))
             {
                 button1textBox2.BackColor = Color.Yellow;
                 button1textBox2.AutoSize = true;
@@ -297,7 +295,7 @@ namespace XpadToMIDI
                 button1textBox2.BackColor = SystemColors.Window;
                 button1textBox2.AutoSize = false;
             }
-            if (buttonFlags.HasFlag(GamepadButtonFlags.B))
+            if (buttonFlags.HasFlag(XInputButtonKind.B))
             {
                 button2textBox2.BackColor = Color.Yellow;
                 button2textBox2.AutoSize = true;
@@ -307,7 +305,7 @@ namespace XpadToMIDI
                 button2textBox2.BackColor = SystemColors.Window;
                 button2textBox2.AutoSize = false;
             }
-            if (buttonFlags.HasFlag(GamepadButtonFlags.X))
+            if (buttonFlags.HasFlag(XInputButtonKind.X))
             {
                 button3textBox2.BackColor = Color.Yellow;
                 button3textBox2.AutoSize = true;
@@ -317,7 +315,7 @@ namespace XpadToMIDI
                 button3textBox2.BackColor = SystemColors.Window;
                 button3textBox2.AutoSize = false;
             }
-            if (buttonFlags.HasFlag(GamepadButtonFlags.Y))
+            if (buttonFlags.HasFlag(XInputButtonKind.Y))
             {
                 button4textBox2.BackColor = Color.Yellow;
                 button4textBox2.AutoSize = true;
@@ -327,7 +325,7 @@ namespace XpadToMIDI
                 button4textBox2.BackColor = SystemColors.Window;
                 button4textBox2.AutoSize = false;
             }
-            if (buttonFlags.HasFlag(GamepadButtonFlags.LeftShoulder))
+            if (buttonFlags.HasFlag(XInputButtonKind.LeftShoulder))
             {
                 button5textBox2.BackColor = Color.Yellow;
                 button5textBox2.AutoSize = true;
@@ -337,7 +335,7 @@ namespace XpadToMIDI
                 button5textBox2.BackColor = SystemColors.Window;
                 button5textBox2.AutoSize = false;
             }
-            if (buttonFlags.HasFlag(GamepadButtonFlags.RightShoulder))
+            if (buttonFlags.HasFlag(XInputButtonKind.RightShoulder))
             {
                 button6textBox2.BackColor = Color.Yellow;
                 button6textBox2.AutoSize = true;
@@ -367,7 +365,7 @@ namespace XpadToMIDI
                 button8textBox2.BackColor = SystemColors.Window;
                 button8textBox2.AutoSize = false;
             }
-            if (buttonFlags.HasFlag(GamepadButtonFlags.Back))
+            if (buttonFlags.HasFlag(XInputButtonKind.Back))
             {
                 button9textBox2.BackColor = Color.Yellow;
                 button9textBox2.AutoSize = true;
@@ -377,7 +375,7 @@ namespace XpadToMIDI
                 button9textBox2.BackColor = SystemColors.Window;
                 button9textBox2.AutoSize = false;
             }
-            if (buttonFlags.HasFlag(GamepadButtonFlags.Start))
+            if (buttonFlags.HasFlag(XInputButtonKind.Start))
             {
                 button10textBox2.BackColor = Color.Yellow;
                 button10textBox2.AutoSize = true;
@@ -387,7 +385,7 @@ namespace XpadToMIDI
                 button10textBox2.BackColor = SystemColors.Window;
                 button10textBox2.AutoSize = false;
             }
-            if (buttonFlags.HasFlag(GamepadButtonFlags.LeftThumb))
+            if (buttonFlags.HasFlag(XInputButtonKind.LeftThumb))
             {
                 button11textBox2.BackColor = Color.Yellow;
                 button11textBox2.AutoSize = true;
@@ -397,7 +395,7 @@ namespace XpadToMIDI
                 button11textBox2.BackColor = SystemColors.Window;
                 button11textBox2.AutoSize = false;
             }
-            if (buttonFlags.HasFlag(GamepadButtonFlags.RightThumb))
+            if (buttonFlags.HasFlag(XInputButtonKind.RightThumb))
             {
                 button12textBox2.BackColor = Color.Yellow;
                 button12textBox2.AutoSize = true;
@@ -408,7 +406,7 @@ namespace XpadToMIDI
                 button12textBox2.AutoSize = false;
             }
             //十字キー
-            if (buttonFlags.HasFlag(GamepadButtonFlags.DPadUp))
+            if (buttonFlags.HasFlag(XInputButtonKind.DigitalPadUp))
             {
                 POVueTextBox2.BackColor = Color.Yellow;
                 POVueTextBox2.AutoSize = true;
@@ -418,7 +416,7 @@ namespace XpadToMIDI
                 POVueTextBox2.BackColor = SystemColors.Window;
                 POVueTextBox2.AutoSize = false;
             }
-            if (buttonFlags.HasFlag(GamepadButtonFlags.DPadRight))
+            if (buttonFlags.HasFlag(XInputButtonKind.DigitalPadRight))
             {
                 POVmigiTextBox2.BackColor = Color.Yellow;
                 POVmigiTextBox2.AutoSize = true;
@@ -428,7 +426,7 @@ namespace XpadToMIDI
                 POVmigiTextBox2.BackColor = SystemColors.Window;
                 POVmigiTextBox2.AutoSize = false;
             }
-            if (buttonFlags.HasFlag(GamepadButtonFlags.DPadDown))
+            if (buttonFlags.HasFlag(XInputButtonKind.DigitalPadDown))
             {
                 POVsitaTextBox2.BackColor = Color.Yellow;
                 POVsitaTextBox2.AutoSize = true;
@@ -438,7 +436,7 @@ namespace XpadToMIDI
                 POVsitaTextBox2.BackColor = SystemColors.Window;
                 POVsitaTextBox2.AutoSize = false;
             }
-            if (buttonFlags.HasFlag(GamepadButtonFlags.DPadLeft))
+            if (buttonFlags.HasFlag(XInputButtonKind.DigitalPadLeft))
             {
                 POVhidariTextBox2.BackColor = Color.Yellow;
                 POVhidariTextBox2.AutoSize = true;
@@ -489,7 +487,7 @@ namespace XpadToMIDI
             //アナログ軸↓
             int[] P = new int[6];
             int[] M = new int[6];
-            int[] analog = new int[6] { Xpad.LeftThumbX/256, Xpad.LeftThumbY/256, Xpad.RightThumbX/256, Xpad.RightThumbY/256, Xpad.LeftTrigger/2, Xpad.RightTrigger/2 };
+            int[] analog = new int[6] { Xpad.ThumbLeftX / 256, Xpad.ThumbLeftY / 256, Xpad.ThumbRightX / 256, Xpad.ThumbRightY / 256, Xpad.LeftTrigger/2, Xpad.RightTrigger/2 };
             TrackBar[] PBar = new TrackBar[5] { XPtrackBar, YPtrackBar, ZPtrackBar, RxPtrackBar, RyPtrackBar };
             TrackBar[] MBar = new TrackBar[5] { XMtrackBar, YMtrackBar, ZMtrackBar, RxMtrackBar, RyMtrackBar };
             TextBox[] PTB = new TextBox[5] { XPtextBox2, YPtextBox2, ZPtextBox2, RxPtextBox2, RTtextBox2 };
